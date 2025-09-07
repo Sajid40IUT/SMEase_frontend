@@ -3,7 +3,7 @@ import tailwind from "tailwindcss";
 import { defineConfig } from "vite";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [react()],
   base: "./",
   css: {
@@ -24,4 +24,12 @@ export default defineConfig({
     outDir: 'dist',
     sourcemap: false,
   },
-});
+  define: {
+    // Ensure environment variables are available at build time
+    'import.meta.env.VITE_API_URL': JSON.stringify(
+      mode === 'production' 
+        ? 'https://smeasebackend-production.up.railway.app'
+        : process.env.VITE_API_URL || 'http://localhost:4000'
+    ),
+  },
+}));
