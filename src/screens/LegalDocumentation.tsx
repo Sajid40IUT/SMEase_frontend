@@ -307,14 +307,7 @@ export const LegalDocumentation = () => {
           </tbody>
         </table>
       </div>
-      <div className="mt-8">
-        <h2 className="text-lg font-semibold mb-2">Document Types</h2>
-        <ul className="list-disc ml-8 text-gray-700">
-          {docTypes.map((type) => (
-            <li key={type}>{type}</li>
-          ))}
-        </ul>
-      </div>
+      
       {/* PDF Preview Modal for Individual */}
       {previewEmp && (
         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
