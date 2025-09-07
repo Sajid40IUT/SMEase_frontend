@@ -2,13 +2,28 @@ import { config } from './config';
 
 const API_BASE_URL = config.API_BASE_URL;
 
-// Helper function to handle API responses
+// Helper function to handle API responses (supports JSON and plain text)
 const handleResponse = async (response: Response) => {
+  const contentType = response.headers.get('content-type') || '';
+  const isJson = contentType.includes('application/json');
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ error: 'Network error' }));
-    throw new Error(error.error || `HTTP ${response.status}: ${response.statusText}`);
+    if (isJson) {
+      const errorBody = await response.json().catch(() => null);
+      const message = (errorBody && (errorBody.error || errorBody.message)) || `HTTP ${response.status}: ${response.statusText}`;
+      throw new Error(message);
+    }
+    const textBody = await response.text().catch(() => '');
+    throw new Error(textBody || `HTTP ${response.status}: ${response.statusText}`);
   }
-  return response.json();
+  if (isJson) {
+    return response.json();
+  }
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text as unknown as any;
+  }
 };
 
 export const api = {

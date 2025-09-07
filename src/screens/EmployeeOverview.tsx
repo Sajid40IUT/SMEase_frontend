@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { config } from "../lib/config";
 import { Users, LayoutGrid, ArrowRight, UserCircle } from "lucide-react";
 import { Button } from "../components/ui/button";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
@@ -45,7 +46,7 @@ export const EmployeeOverview = () => {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/employees');
+      const response = await fetch(`${config.API_BASE_URL}/employees`);
       if (!response.ok) {
         throw new Error('Failed to fetch employees');
       }
@@ -89,7 +90,7 @@ export const EmployeeOverview = () => {
         default_shift: "09:00 AM - 05:00 PM",
       };
 
-      const response = await fetch('/api/employees', {
+      const response = await fetch(`${config.API_BASE_URL}/employees`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

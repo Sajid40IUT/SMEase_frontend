@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { config } from "../lib/config";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
 
 // Database types that match our Prisma schema
@@ -99,9 +100,9 @@ export const PayrollDistribution = () => {
     try {
       setLoading(true);
       const [employeesRes, payslipsRes, periodsRes] = await Promise.all([
-        fetch('/api/employees'),
-        fetch('/api/payslips'),
-        fetch('/api/payroll-periods')
+        fetch(`${config.API_BASE_URL}/employees`),
+        fetch(`${config.API_BASE_URL}/payslips`),
+        fetch(`${config.API_BASE_URL}/payroll-periods`)
       ]);
 
       if (!employeesRes.ok || !payslipsRes.ok || !periodsRes.ok) {
@@ -130,7 +131,7 @@ export const PayrollDistribution = () => {
     fetchData();
   }, []);
 
-  const payrollRows = employees.map(calculatePayroll);
+  const payrollRows: PayslipRow[] = employees.map(emp => ({ ...calculatePayroll(emp) }));
   const totalPayroll = payrollRows.reduce((sum, row) => sum + row.gross, 0);
   const totalTax = payrollRows.reduce((sum, row) => sum + row.taxes, 0);
   const pendingPayslips = payrollRows.filter(row => row.status !== 'Present').length;

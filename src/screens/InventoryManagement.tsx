@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { config } from "../lib/config";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
@@ -49,7 +50,7 @@ export const InventoryManagement = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/products');
+      const response = await fetch(`${config.API_BASE_URL}/products`);
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
@@ -110,7 +111,7 @@ export const InventoryManagement = () => {
       if (editProduct) {
         // Update existing product
         // First update the supplier
-        const supplierResponse = await fetch(`/api/suppliers/${editProduct.supplier.supplier_id}`, {
+        const supplierResponse = await fetch(`${config.API_BASE_URL}/suppliers/${editProduct.supplier.supplier_id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -126,7 +127,7 @@ export const InventoryManagement = () => {
         }
 
         // Then update the product
-        const productResponse = await fetch(`/api/products/${editProduct.upc}`, {
+        const productResponse = await fetch(`${config.API_BASE_URL}/products/${editProduct.upc}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -150,7 +151,7 @@ export const InventoryManagement = () => {
         }
 
         // First create the supplier
-        const supplierResponse = await fetch('/api/suppliers', {
+        const supplierResponse = await fetch(`${config.API_BASE_URL}/suppliers`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -168,7 +169,7 @@ export const InventoryManagement = () => {
         const supplier = await supplierResponse.json();
 
         // Then create the product
-        const productResponse = await fetch('/api/products', {
+        const productResponse = await fetch(`${config.API_BASE_URL}/products`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -208,7 +209,7 @@ export const InventoryManagement = () => {
     setActionLoading(true);
     
     try {
-      const response = await fetch(`/api/products/${showDelete.product.upc}`, {
+      const response = await fetch(`${config.API_BASE_URL}/products/${showDelete.product.upc}`, {
         method: 'DELETE',
       });
       

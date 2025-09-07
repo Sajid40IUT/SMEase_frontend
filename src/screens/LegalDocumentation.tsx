@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { config } from "../lib/config";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
 import { PDFDownloadLink, Document, Page, Text, View, StyleSheet, BlobProvider, pdf } from "@react-pdf/renderer";
 import JSZip from "jszip";
@@ -107,8 +108,8 @@ export const LegalDocumentation = () => {
     try {
       setLoading(true);
       const [employeesRes, taxDocsRes] = await Promise.all([
-        fetch('/api/employees'),
-        fetch('/api/tax-documents')
+        fetch(`${config.API_BASE_URL}/employees`),
+        fetch(`${config.API_BASE_URL}/tax-documents`)
       ]);
 
       if (!employeesRes.ok || !taxDocsRes.ok) {

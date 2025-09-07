@@ -28,7 +28,7 @@ export default defineConfig(({ mode }) => ({
     // Ensure environment variables are available at build time
     'import.meta.env.VITE_API_URL': JSON.stringify(
       mode === 'production' 
-        ? 'https://smeasebackend-production.up.railway.app'
+        ? 'https://smeasebackend-production.up.railway.app/api'
         : process.env.VITE_API_URL || 'http://localhost:4000'
     ),
   },

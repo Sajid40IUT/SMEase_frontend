@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
+import { config } from "../lib/config";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
 import { Button } from "../components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card";
@@ -47,7 +48,7 @@ export const InventoryOverview = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/products');
+      const response = await fetch(`${config.API_BASE_URL}/products`);
       if (!response.ok) {
         throw new Error('Failed to fetch products');
       }
@@ -103,7 +104,7 @@ export const InventoryOverview = () => {
       }
 
       // First create the supplier
-      const supplierResponse = await fetch('/api/suppliers', {
+      const supplierResponse = await fetch(`${config.API_BASE_URL}/suppliers`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -121,7 +122,7 @@ export const InventoryOverview = () => {
       const supplier = await supplierResponse.json();
 
       // Then create the product
-      const productResponse = await fetch('/api/products', {
+      const productResponse = await fetch(`${config.API_BASE_URL}/products`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

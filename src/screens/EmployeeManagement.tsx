@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { config } from "../lib/config";
 import { DashboardLayout } from "./Dashboard/DashboardLayout";
 import { Button } from "../components/ui/button";
 import { UserCircle, MoreVertical } from "lucide-react";
@@ -50,7 +51,7 @@ export const EmployeeManagement = () => {
   const fetchEmployees = async () => {
     try {
       setLoading(true);
-      const response = await fetch("/api/employees");
+      const response = await fetch(`${config.API_BASE_URL}/employees`);
       if (!response.ok) {
         throw new Error("Failed to fetch employees");
       }
@@ -103,7 +104,7 @@ export const EmployeeManagement = () => {
       let res;
       if (editEmployee) {
         // Update
-        res = await fetch(`/api/employees/${editEmployee.employee_id}`, {
+        res = await fetch(`${config.API_BASE_URL}/employees/${editEmployee.employee_id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
@@ -114,7 +115,7 @@ export const EmployeeManagement = () => {
           ...payload,
           employee_id: form.employee_id || `EMP-${Math.floor(Math.random() * 9000) + 1000}`,
         };
-        res = await fetch(`/api/employees`, {
+        res = await fetch(`${config.API_BASE_URL}/employees`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(newEmployeeData),
@@ -143,7 +144,7 @@ export const EmployeeManagement = () => {
     if (!deleteId) return;
     setActionLoading(true);
     try {
-      const res = await fetch(`/api/employees/${deleteId}`, { method: "DELETE" });
+      const res = await fetch(`${config.API_BASE_URL}/employees/${deleteId}`, { method: "DELETE" });
       if (!res.ok) {
         const err = await res.json();
         throw new Error(err.error || "Failed to delete employee");
